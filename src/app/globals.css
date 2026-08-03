@@ -1,26 +1,82 @@
 @import "tailwindcss";
 
+/*
+  라나엄마 브랜드 시스템
+  ─────────────────────────────────────────────
+  색: MINON STUDIO CI 3색 (2024-05 제작) + 매장 실제 페인트
+      민트   — 매장 배너 / 앞치마
+      로즈   — 매장 배너
+      테라코타 — 매장 벽 (노루페인트 MD6046 Aged Orange)
+      블루   — 워드마크의 's' 한 글자
+  톤: 손글씨 · 종이 · 넉넉한 여백. 세일 배너 없음.
+*/
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --mint: #bfe0dd;
+  --mint-deep: #7db9b3;
+  --rose: #f2c9cc;
+  --rose-deep: #dc9aa0;
+  --terra: #c4633c;
+  --terra-deep: #a34e2c;
+  --blue: #4fa8e8;
+  --ink: #23282e;
+  --ink-soft: #5b636c;
+  --paper: #fdfaf5;
+  --paper-2: #f6f0e7;
+  --line: #e6ddd0;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-mint: var(--mint);
+  --color-mint-deep: var(--mint-deep);
+  --color-rose: var(--rose);
+  --color-terra: var(--terra);
+  --color-ink: var(--ink);
+  --color-paper: var(--paper);
+  --color-line: var(--line);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+  line-height: 1.75;
+}
+
+/* 손글씨 느낌의 제목 — 영문 워드마크와 어울리게 */
+.display {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", sans-serif;
+  letter-spacing: -0.03em;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+/* 종이 질감 */
+.paper-grain {
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(196, 99, 60, 0.04) 0, transparent 45%),
+    radial-gradient(circle at 80% 70%, rgba(125, 185, 179, 0.05) 0, transparent 45%);
+}
+
+/* 손그림 밑줄 */
+.underline-hand {
+  background-image: linear-gradient(transparent 62%, var(--mint) 62%, var(--mint) 88%, transparent 88%);
+}
+
+.container-x {
+  width: 100%;
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .container-x { padding-inline: 2rem; }
 }
