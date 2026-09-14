@@ -14,7 +14,8 @@ const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const nextConfig: NextConfig = {
   output: "export",
   basePath: BASE_PATH,
-  images: { unoptimized: true },
+  // unoptimized 대신 커스텀 로더를 쓴다 — unoptimized 는 basePath 를 안 붙여 이미지가 404 가 된다
+  images: { loader: "custom", loaderFile: "./image-loader.ts" },
   trailingSlash: true, // Pages 의 디렉터리 색인(/menu/ → /menu/index.html) 대응
 };
 
