@@ -1,0 +1,56 @@
+# 라나엄마 브랜드 사이트 → GitHub Pages 자동 배포
+# main 에 push 하면 빌드해서 Pages 에 올린다.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build (static export)
+        env:
+          # 하위경로 배포(<user>.github.io/lanasmom) 이므로 basePath 필요.
+          # 도메인을 붙이면 이 두 줄을 지우고 NEXT_PUBLIC_INDEXABLE 을 true 로 바꾼다.
+          NEXT_PUBLIC_BASE_PATH: /lanasmom
+          NEXT_PUBLIC_SITE_URL: https://crossnam-coding.github.io/lanasmom
+          NEXT_PUBLIC_INDEXABLE: "false"
+        run: npm run build
+
+      - name: Disable Jekyll
+        run: touch out/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

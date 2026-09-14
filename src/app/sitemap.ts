@@ -2,7 +2,10 @@ import type { MetadataRoute } from "next";
 import { POSTS } from "@/data/journal";
 import { PRODUCTS, slugOf } from "@/data/products";
 
-const SITE = "https://lanasmom.com";
+/** 정적 export(GitHub Pages)에서 빌드 시각에 한 번만 생성한다 */
+export const dynamic = "force-static";
+
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lanasmom.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

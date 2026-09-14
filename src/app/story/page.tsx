@@ -105,13 +105,22 @@ export default function StoryPage() {
       {/* 인사말 카드 — 실물 그대로 */}
       <section className="container-x pb-20">
         <div className="grid items-center gap-10 rounded-3xl bg-[var(--mint)]/25 p-8 md:grid-cols-[1fr_1.2fr] md:p-12">
-          <Image
-            src="/brand/card-greeting-white.png"
-            alt="라나엄마 인사말 카드"
-            width={1034}
-            height={1744}
-            className="mx-auto w-full max-w-[260px] rounded-2xl bg-white shadow-sm"
-          />
+          <div className="mx-auto flex w-full max-w-[300px] gap-3">
+            <Image
+              src="/brand/postcard-front.png"
+              alt="라나엄마 엽서 앞면 — 엄마와 라나"
+              width={1400}
+              height={2078}
+              className="w-1/2 rounded-xl bg-white shadow-sm"
+            />
+            <Image
+              src="/brand/postcard-back-greeting.png"
+              alt="라나엄마 인사말 카드"
+              width={1400}
+              height={2078}
+              className="w-1/2 rounded-xl bg-white shadow-sm"
+            />
+          </div>
           <div>
             <p className="text-[14px] text-[var(--ink-soft)]">보내드리는 상자마다 넣는 카드입니다.</p>
             <blockquote className="mt-5 space-y-4 text-[16.5px] leading-[1.9]">
@@ -120,6 +129,9 @@ export default function StoryPage() {
                 딸 라나와 가족을 위해 만드는 마음으로 맛있는 음식을 정성껏 준비했습니다.
               </p>
               <p>저의 요리가 여러분의 식탁에서도 행복과 웃음을 전달해 드릴 수 있기를 바랍니다.</p>
+              <p>
+                소중한 사람들과 함께하는 귀한 시간에 저의 음식과 함께 해주셔서 감사합니다.
+              </p>
             </blockquote>
             <p className="mt-5 text-[15px] text-[var(--ink-soft)]">— 라나 엄마 —</p>
           </div>

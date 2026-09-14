@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Vercel
 .vercel
+
+# 로컬 백업본
+*.bak

@@ -3,7 +3,9 @@ import Link from "next/link";
 import Image from "next/image";
 import "./globals.css";
 
-const SITE = "https://lanasmom.com"; // TODO: 도메인 확정 후 확인
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lanasmom.com";
+/** 사업자정보가 비어 있는 동안은 색인을 막는다. 도메인 붙일 때 NEXT_PUBLIC_INDEXABLE=true */
+const INDEXABLE = process.env.NEXT_PUBLIC_INDEXABLE === "true";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
     description: "1++ 한우 양지로 만든 장조림과 국·탕. Warmth on Your Table.",
   },
   alternates: { canonical: "/" },
-  robots: { index: true, follow: true },
+  robots: { index: INDEXABLE, follow: INDEXABLE },
 };
 
 /* GEO — AI 검색이 인용할 수 있게 사실을 구조화해 둔다 */
@@ -74,11 +76,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 priority
               />
               <Image
-                src="/brand/wordmark-1line-alpha.png"
+                src="/brand/wordmark-official-alpha.png"
                 alt="Lana's mom"
-                width={140}
-                height={22}
-                className="h-[18px] w-auto"
+                width={720}
+                height={96}
+                className="h-[20px] w-auto"
                 priority
               />
             </Link>
@@ -106,11 +108,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="mt-24 border-t border-[var(--line)] bg-[var(--paper-2)]">
           <div className="container-x py-12">
             <Image
-              src="/brand/logo-main-mom-lana-alpha.png"
+              src="/brand/logo-official-illust-alpha.png"
               alt="라나엄마"
-              width={110}
-              height={105}
-              className="mb-6 h-24 w-auto opacity-90"
+              width={600}
+              height={774}
+              className="mb-6 h-28 w-auto opacity-90"
             />
             <div className="grid gap-8 text-[13px] leading-relaxed text-[var(--ink-soft)] md:grid-cols-2">
               <div>
