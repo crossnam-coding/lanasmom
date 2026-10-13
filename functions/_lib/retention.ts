@@ -17,6 +17,11 @@ export async function enforceRetention(env: Env): Promise<void> {
   const old = await env.DB.prepare("DELETE FROM orders WHERE created_at < ?").bind(iso(5 * 365 * DAY)).run();
   await env.DB.prepare("DELETE FROM sessions WHERE expires_at < ?").bind(iso(0)).run();
   await env.DB.prepare("DELETE FROM email_tokens WHERE expires_at < ?").bind(iso(0)).run();
+  // 문의(소비자 불만·분쟁 기록): 마지막 대화 3년 뒤 삭제
+  const oldInq = iso(3 * 365 * DAY);
+  await env.DB.prepare("DELETE FROM inquiry_messages WHERE inquiry_id IN (SELECT id FROM inquiries WHERE updated_at < ?)").bind(oldInq).run();
+  await env.DB.prepare("DELETE FROM inquiries WHERE updated_at < ?").bind(oldInq).run();
+  await env.DB.prepare("DELETE FROM refunds WHERE at < ?").bind(iso(5 * 365 * DAY)).run();
   const ev = await env.DB.prepare("DELETE FROM events WHERE at < ?").bind(iso(365 * DAY)).run();
   await logEvent(env, "retention", null, { unpaid: unpaid.meta.changes, old: old.meta.changes, events: ev.meta.changes });
 }

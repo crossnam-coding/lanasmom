@@ -2,6 +2,7 @@ import { fetchPayment } from "./portone";
 import { notifyOwner } from "./notify";
 import { logEvent, nowIso, type Env } from "./env";
 import type { OrderLine } from "./catalog";
+import { getSettings, shipDateFor } from "./settings";
 
 export interface OrderRow {
   id: string; access_key: string; created_at: string; status: string;
@@ -9,6 +10,7 @@ export interface OrderRow {
   zipcode: string; address1: string; address2: string | null; memo: string | null;
   items_json: string; subtotal: number; shipping: number; total: number;
   paid_at: string | null; pg_provider: string | null; receipt_url: string | null;
+  ship_date: string | null; carrier: string | null; refunded: number; user_id: string | null;
   tracking_no: string | null; shipped_at: string | null; admin_note: string | null; agree_at: string;
 }
 
@@ -42,9 +44,11 @@ export async function confirmPayment(env: Env, orderId: string): Promise<{ ok: b
     return { ok: false, status: "review", reason: "amount_mismatch" };
   }
 
+  const paidAt = pay.paidAt ?? nowIso();
+  const st = await getSettings(env);
   const res = await env.DB.prepare(
-    "UPDATE orders SET status = 'paid', paid_at = ?, pg_provider = ?, receipt_url = ? WHERE id = ? AND status = 'pending'",
-  ).bind(pay.paidAt ?? nowIso(), pay.channel?.pgProvider ?? null, pay.receiptUrl ?? null, orderId).run();
+    "UPDATE orders SET status = 'paid', paid_at = ?, pg_provider = ?, receipt_url = ?, ship_date = ?, carrier = ? WHERE id = ? AND status = 'pending'",
+  ).bind(paidAt, pay.channel?.pgProvider ?? null, pay.receiptUrl ?? null, shipDateFor(new Date(paidAt), st), st.carrier, orderId).run();
 
   if (res.meta.changes === 1) {
     const lines = JSON.parse(order.items_json) as OrderLine[];

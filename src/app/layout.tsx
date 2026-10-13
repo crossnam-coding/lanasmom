@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import "./globals.css";
 import CartLink from "@/components/CartLink";
+import HideOnAdmin from "@/components/HideOnAdmin";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lanasmom.com";
 /** 사업자정보가 비어 있는 동안은 색인을 막는다. 도메인 붙일 때 NEXT_PUBLIC_INDEXABLE=true */
@@ -70,6 +71,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
 
+        <HideOnAdmin>
         <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--paper)]/90 backdrop-blur">
           <div className="container-x flex h-14 items-center justify-between gap-4 md:h-20">
             <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="라나엄마 홈">
@@ -122,9 +124,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ))}
           </nav>
         </header>
+        </HideOnAdmin>
 
         <main>{children}</main>
 
+        <HideOnAdmin>
         <footer className="mt-24 border-t border-[var(--line)] bg-[var(--paper-2)]">
           <div className="container-x py-12">
             <Image
@@ -173,6 +177,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </p>
           </div>
         </footer>
+        </HideOnAdmin>
       </body>
     </html>
   );

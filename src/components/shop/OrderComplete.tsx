@@ -12,6 +12,7 @@ interface Order {
 const LABEL: Record<string, string> = {
   paid: "주문이 접수됐어요", preparing: "만들고 있어요", shipped: "보내드렸어요",
   pending: "결제를 확인하고 있어요", failed: "결제가 끝나지 않았어요", cancelled: "취소된 주문이에요", review: "확인이 필요한 주문이에요",
+  refunded: "환불해 드렸어요",
 };
 
 export default function OrderComplete() {
@@ -61,6 +62,8 @@ export default function OrderComplete() {
       {o.trackingNo && <p className="mt-5 text-[15px]">송장번호 {o.trackingNo}</p>}
       {o.receiptUrl && <a href={o.receiptUrl} target="_blank" rel="noopener" className="mt-5 inline-block text-[14px] underline">영수증 보기</a>}
       <p className="mt-8 text-[13.5px] text-[var(--ink-soft)]">이 화면 주소를 저장해 두시면 나중에 배송 상태를 다시 볼 수 있어요.</p>
+      <Link href={`/contact/?order=${encodeURIComponent(o.id)}&key=${encodeURIComponent(new URLSearchParams(typeof location !== "undefined" ? location.search : "").get("key") ?? "")}`}
+        className="mt-4 inline-block rounded-full border border-[var(--terra)] px-5 py-2.5 text-[14.5px] font-semibold text-[var(--terra)]">이 주문 문의하기</Link>
     </div>
   );
 }
