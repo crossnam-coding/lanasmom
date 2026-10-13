@@ -45,3 +45,7 @@ next-env.d.ts
 
 # 로컬 백업본
 *.bak
+
+# Cloudflare 로컬 비밀값
+.dev.vars
+.wrangler/

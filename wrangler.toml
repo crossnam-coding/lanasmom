@@ -1,0 +1,9 @@
+# Cloudflare Pages 설정 — 이 파일이 있으면 바인딩은 여기가 정본(대시보드는 읽기 전용)
+name = "lanasmom"
+pages_build_output_dir = "out"   # ⚠️ "." 금지 — 프로젝트 루트가 통째로 공개된다
+compatibility_date = "2026-05-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "lanasmom"
+database_id = "00000000-0000-0000-0000-000000000000"   # TODO: 실제 D1 만든 뒤 교체. deploy.sh 가 이 값이면 배포를 막는다

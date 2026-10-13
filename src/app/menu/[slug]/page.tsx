@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import AddToCart from "@/components/AddToCart";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -14,6 +15,8 @@ import {
 } from "@/data/products";
 import { RATINGS, voicesOf, sourceLabel } from "@/data/reviews";
 import { getPost } from "@/data/journal";
+
+const CHECKOUT_ON = process.env.NEXT_PUBLIC_CHECKOUT === "on";
 
 export function generateStaticParams() {
   return PRODUCTS.map((p) => ({ slug: slugOf(p) }));
@@ -155,15 +158,25 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <span className="mt-8 block cursor-not-allowed rounded-full bg-[var(--line)] px-8 py-4 text-center font-semibold text-[var(--ink-soft)]">
                 지금은 주문할 수 없어요
               </span>
+            ) : CHECKOUT_ON && typeof p.price === "number" ? (
+              <>
+                <AddToCart slug={slug} />
+                <a href={storeUrl(p.id, `product_${slug}`)} target="_blank" rel="noopener"
+                  className="mt-3 block text-center text-[13.5px] text-[var(--ink-soft)] underline">
+                  네이버 스마트스토어에서 사기
+                </a>
+              </>
             ) : (
               <a href={storeUrl(p.id, `product_${slug}`)} target="_blank" rel="noopener"
                 className="mt-8 block rounded-full bg-[var(--terra)] px-8 py-4 text-center font-semibold text-white transition hover:bg-[var(--terra-deep)]">
                 스마트스토어에서 주문하기
               </a>
             )}
-            <p className="mt-3 text-center text-[12.5px] text-[var(--ink-soft)]">
-              주문과 결제는 네이버 스마트스토어에서 이루어집니다
-            </p>
+            {!CHECKOUT_ON && (
+              <p className="mt-3 text-center text-[12.5px] text-[var(--ink-soft)]">
+                주문과 결제는 네이버 스마트스토어에서 이루어집니다
+              </p>
+            )}
 
             {d?.occasions && (
               <div className="mt-8 flex flex-wrap gap-2">

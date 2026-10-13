@@ -12,8 +12,14 @@ ENV_FILE="${CF_ENV:-$HOME/존버맵/.env}"   # CLOUDFLARE_API_TOKEN / CLOUDFLARE
 [ -f "$ENV_FILE" ] || { echo "❌ Cloudflare 토큰 파일 없음: $ENV_FILE"; exit 1; }
 set -a; . "$ENV_FILE"; set +a
 
+# 실제 D1 을 만들기 전에는 배포하지 않는다 (가짜 id 로 올리면 주문 API 가 깨진다)
+if grep -q '00000000-0000-0000-0000-000000000000' wrangler.toml 2>/dev/null; then
+  echo "❌ wrangler.toml 의 D1 id 가 아직 가짜다 — Cloudflare 에서 D1 'lanasmom' 을 만들고 id 를 넣은 뒤 배포"; exit 1
+fi
+
 rm -rf out
-NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://lanasmom.com}" npx next build
+# 홈페이지 결제 화면은 NEXT_PUBLIC_CHECKOUT=on 일 때만 보인다 (서버 쪽 스위치 = Cloudflare 환경변수 CHECKOUT_ENABLED)
+NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://lanasmom.com}" NEXT_PUBLIC_CHECKOUT="${NEXT_PUBLIC_CHECKOUT:-off}" npx next build
 
 # ── 올리기 전 검사 ───────────────────────────────────────────
 [ -f out/index.html ] || { echo "❌ out/index.html 없음 — 빌드 실패"; exit 1; }

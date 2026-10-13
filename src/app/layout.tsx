@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import "./globals.css";
+import CartLink from "@/components/CartLink";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lanasmom.com";
 /** 사업자정보가 비어 있는 동안은 색인을 막는다. 도메인 붙일 때 NEXT_PUBLIC_INDEXABLE=true */
@@ -91,6 +92,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   {n.label}
                 </Link>
               ))}
+              <CartLink />
               <a
                 href="https://smartstore.naver.com/offhome?utm_source=lanasmom_site&utm_medium=header&utm_campaign=brand_site"
                 target="_blank"
