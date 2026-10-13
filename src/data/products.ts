@@ -22,6 +22,8 @@ export interface Product {
   category: Category;
   hero?: boolean;
   soldOut?: boolean;
+  /** 품절 사유 안내 (상세 페이지에 표시) */
+  soldOutNote?: string;
   blurb?: string;
   note?: string;
 }
@@ -93,6 +95,8 @@ export const PRODUCTS: Product[] = [
   {
     id: null, name: "한우스지된장전골", size: "3~4인분", price: 39000,
     image: "/products/suji-doenjang.jpg", category: "국·탕", hero: true,
+    // 2026-10-13 오빠: 와디즈 준비 기간 동안 일시 품절(판매중지·삭제 아님). 와디즈 오픈 때 버튼을 와디즈 링크로
+    soldOut: true, soldOutNote: "재료 수급 사정으로 당분간 판매를 쉬어 갑니다. 다시 열면 이곳에서 먼저 알려드릴게요.",
     blurb: "먹고 싶어도 파는 데가 없던 그 국물. 한우투뿔양지장조림 맛보기가 함께 갑니다.",
     note: "냉동 배송. 장조림 40g + 메추리알 6~7개가 함께 들어갑니다.",
   },

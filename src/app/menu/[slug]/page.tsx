@@ -128,6 +128,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 지금은 품절입니다
               </span>
             )}
+            {p.soldOut && p.soldOutNote && (
+              <p className="mb-4 text-[14px] leading-relaxed text-[var(--ink-soft)]">{p.soldOutNote}</p>
+            )}
             <h1 className="display text-[1.8rem] md:text-[2.2rem]">{p.name}</h1>
             {p.size && <p className="mt-2 text-[15px] text-[var(--ink-soft)]">{p.size}</p>}
             {rating && (
@@ -148,10 +151,16 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               배송비 {SHIPPING_FEE.toLocaleString("ko-KR")}원
             </p>
 
-            <a href={storeUrl(p.id, `product_${slug}`)} target="_blank" rel="noopener"
-              className="mt-8 block rounded-full bg-[var(--terra)] px-8 py-4 text-center font-semibold text-white transition hover:bg-[var(--terra-deep)]">
-              스마트스토어에서 주문하기
-            </a>
+            {p.soldOut ? (
+              <span className="mt-8 block cursor-not-allowed rounded-full bg-[var(--line)] px-8 py-4 text-center font-semibold text-[var(--ink-soft)]">
+                지금은 주문할 수 없어요
+              </span>
+            ) : (
+              <a href={storeUrl(p.id, `product_${slug}`)} target="_blank" rel="noopener"
+                className="mt-8 block rounded-full bg-[var(--terra)] px-8 py-4 text-center font-semibold text-white transition hover:bg-[var(--terra-deep)]">
+                스마트스토어에서 주문하기
+              </a>
+            )}
             <p className="mt-3 text-center text-[12.5px] text-[var(--ink-soft)]">
               주문과 결제는 네이버 스마트스토어에서 이루어집니다
             </p>
