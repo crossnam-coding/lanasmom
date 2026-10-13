@@ -22,7 +22,7 @@
 ### 옛 배포처
 | 곳 | 상태 |
 |---|---|
-| GitHub Pages `crossnam-coding.github.io/lanasmom/` | 2026-10-13 시점 내용으로 멈춰 있다. 워크플로(`deploy-pages.yml`)는 수동 실행만 남김. **`lanasmom.com` 이 열리면 내린다** (같은 내용이 두 주소에 있으면 안 된다) |
+| GitHub Pages `crossnam-coding.github.io/lanasmom/` | ✅ **2026-10-13 내림**(`gh api -X DELETE repos/crossnam-coding/lanasmom/pages` → 404 확인). `deploy-pages.yml` 은 수동 실행만 남아 있으나 Pages 가 꺼져 있어 쓰지 않는다 |
 | Vercel `lanasmom.vercel.app` | HTTP 402(결제 잠김)로 죽음(2026-09-14). `vercel --prod` 금지 |
 
 ## 빌드 원리 (깨지기 쉬운 곳)
