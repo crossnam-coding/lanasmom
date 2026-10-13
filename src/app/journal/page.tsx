@@ -6,7 +6,7 @@ import { POSTS } from "@/data/journal";
 export const metadata: Metadata = {
   title: "부엌일기",
   description:
-    "라나엄마가 지나온 자리와 오늘의 부엌을 기록합니다. 2018년 미사강변 153부터 지금 광주 작업장까지.",
+    "라나엄마가 지나온 자리와 오늘의 부엌을 기록합니다. 2017년 미사강변 153부터 지금 광주 작업장까지.",
   alternates: { canonical: "/journal" },
 };
 

@@ -2,9 +2,8 @@
 # main 에 push 하면 빌드해서 Pages 에 올린다.
 name: Deploy to GitHub Pages
 
+# 2026-10-13 Cloudflare Pages 로 이사 — 배포는 ./deploy.sh. 이 워크플로는 수동 실행만 남긴다.
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
