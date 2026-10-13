@@ -3,7 +3,8 @@
 > 2026-10-13 갱신. **이 파일이 배포 정본이다.**
 
 ## 지금 배포 방식 = Cloudflare Pages (2026-10-13 이사)
-- 주소: **https://lanasmom.pages.dev** → 도메인 연결 후 `https://lanasmom.com`
+- 주소: **https://lanasmom.com** (2026-10-13 연결 · `www` 도 같은 내용 · http→https 301) · 원본 `https://lanasmom.pages.dev`
+- Cloudflare 계정 = 대시보드 표기 `Crossnam@naver.com's Account` · 도메인도 같은 계정에서 구매(등록처 Cloudflare · 만료 2027-10-13 전후 자동갱신 확인 필요)
 - Cloudflare Pages 프로젝트 `lanasmom` (production branch `main`) · 직접 업로드 방식(깃 연동 아님)
 - 배포 명령은 하나다.
   ```bash
@@ -43,7 +44,8 @@
   ```
 - 그날 같이 할 것: 푸터·소개 `●●●` 채우기 · 쿠키 없는 방문 분석 · **개인정보처리방침**(분석 넣는 순간 필요)
 
-## 도메인 `lanasmom.com` 연결 (2026-10-13 확정 · Cloudflare 에서 구매)
+## 도메인 `lanasmom.com` 연결 — ✅ 2026-10-13 완료 (아래는 했던 순서·다시 할 때 참고)
+> 🔴 API 로 Pages 에 도메인을 붙여도 DNS 레코드는 **자동으로 안 생겼다**(토큰에 DNS 권한 없음) → 대시보드 DNS 에서 `@`·`www` CNAME → `lanasmom.pages.dev`(프록시 켬) 를 손으로 넣고 재검증하니 1~2분 만에 active
 > 연결은 색인과 별개다. **연결해도 색인은 계속 막혀 있다** → 먼저 연결해도 된다.
 
 1. **구매** — Cloudflare 대시보드 → Domain Registration → Register Domains → `lanasmom.com` (결제 = 오빠)
