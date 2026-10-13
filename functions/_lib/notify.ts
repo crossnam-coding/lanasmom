@@ -11,7 +11,8 @@ export interface NoticeOrder {
 
 export async function notifyOwner(env: Env, o: NoticeOrder): Promise<{ push: number; pushFailed: number; email: boolean }> {
   const title = "새 주문이 들어왔어요";
-  const body = `${o.summary} · ${o.total.toLocaleString("ko-KR")}원 · ${o.name}님`;
+  // 손님 이름은 알림에 넣지 않는다 — 푸시·메일은 해외 서버를 거친다. 이름은 어드민 화면에서 본다
+  const body = `${o.summary} · ${o.total.toLocaleString("ko-KR")}원`;
   const url = `/admin/?order=${encodeURIComponent(o.id)}`;
   const push = await sendPushAll(env, { title, body, url, tag: o.id });
   let email = false;
