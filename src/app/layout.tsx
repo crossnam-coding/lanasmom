@@ -116,11 +116,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             />
             <div className="grid gap-8 text-[13px] leading-relaxed text-[var(--ink-soft)] md:grid-cols-2">
               <div>
-                <p className="mb-2 font-semibold text-[var(--ink)]">라나엄마 (Lana&rsquo;s mom)</p>
-                {/* TODO: 오빠 확인 후 채울 것 */}
-                <p>사업자등록번호 ●●●-●●-●●●●●</p>
-                <p>영업신고번호 ●●●●●●●</p>
-                <p>대표 ●●● · 경기도 광주시 오포로 683</p>
+                <p className="mb-2 font-semibold text-[var(--ink)]">라나맘 주식회사 · 라나엄마 (Lana&rsquo;s mom)</p>
+                {/* 사업자등록증 2026-10-13 발급본 기준. 영업신고번호·문의 번호는 아직 없음 */}
+                <p>사업자등록번호 493-86-03839</p>
+                <p>영업신고번호 법인 명의 이전 중</p>
+                <p>대표 김대억, 임은선 · 경기도 광주시 오포로 683, 2동 1층 (추자동)</p>
                 <p>고객문의 ●●●-●●●●-●●●●</p>
               </div>
               <div>
