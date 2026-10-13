@@ -12,7 +12,7 @@ export default function CartLink() {
   }, []);
   if (!CHECKOUT_ON) return null;
   return (
-    <Link href="/cart" className="relative text-[var(--ink-soft)] hover:text-[var(--terra)]" aria-label={`장바구니 ${n}개`}>
+    <Link href="/cart" className="relative whitespace-nowrap text-[14px] text-[var(--ink-soft)] hover:text-[var(--terra)] md:text-[15px]" aria-label={`장바구니 ${n}개`}>
       장바구니
       {n > 0 && (
         <span className="ml-1 inline-flex min-w-5 items-center justify-center rounded-full bg-[var(--terra)] px-1.5 text-[11px] font-semibold text-white">

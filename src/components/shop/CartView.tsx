@@ -49,7 +49,7 @@ export default function CartView() {
         ) : (
           <Link href="/checkout" className="mt-6 block rounded-full bg-[var(--terra)] px-6 py-4 text-center font-semibold text-white">주문하기</Link>
         )}
-        <p className="mt-3 text-center text-[12.5px] text-[var(--ink-soft)]">회원가입 없이 주문할 수 있어요</p>
+        <p className="mt-3 text-center text-[12.5px] text-[var(--ink-soft)]">회원가입 없이 주문할 수 있어요 · <Link href="/login/?next=/checkout/" className="underline">로그인하고 주문</Link></p>
       </aside>
     </div>
   );

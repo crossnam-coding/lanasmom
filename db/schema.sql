@@ -23,8 +23,10 @@ CREATE TABLE IF NOT EXISTS orders (
   tracking_no  TEXT,
   shipped_at   TEXT,
   admin_note   TEXT,
-  agree_at     TEXT NOT NULL              -- 개인정보 수집·이용 동의 시각
+  agree_at     TEXT NOT NULL,             -- 개인정보 수집·이용 동의 시각
+  user_id      TEXT                       -- 로그인 주문이면 users.id, 비회원이면 NULL
 );
+CREATE INDEX IF NOT EXISTS idx_orders_user ON orders(user_id);
 CREATE INDEX IF NOT EXISTS idx_orders_created ON orders(created_at);
 CREATE INDEX IF NOT EXISTS idx_orders_status  ON orders(status);
 
@@ -44,4 +46,30 @@ CREATE TABLE IF NOT EXISTS events (
   kind         TEXT NOT NULL,
   order_id     TEXT,
   detail       TEXT
+);
+
+-- 로그인(선택) — 카카오·네이버·구글·이메일. 비회원 주문은 그대로 된다
+CREATE TABLE IF NOT EXISTS users (
+  id            TEXT PRIMARY KEY,
+  provider      TEXT NOT NULL,             -- kakao | naver | google | email | toss
+  provider_id   TEXT NOT NULL,             -- 그 서비스의 회원 식별값 (이메일 로그인은 이메일)
+  email         TEXT,
+  name          TEXT,
+  created_at    TEXT NOT NULL,
+  last_login_at TEXT NOT NULL,
+  UNIQUE (provider, provider_id)
+);
+CREATE TABLE IF NOT EXISTS sessions (
+  token_hash  TEXT PRIMARY KEY,            -- 쿠키 값의 SHA-256 (원본은 저장하지 않음)
+  user_id     TEXT NOT NULL,
+  created_at  TEXT NOT NULL,
+  expires_at  TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_sessions_user ON sessions(user_id);
+-- 이메일 로그인 링크 (15분 유효, 한 번 쓰면 삭제)
+CREATE TABLE IF NOT EXISTS email_tokens (
+  token_hash  TEXT PRIMARY KEY,
+  email       TEXT NOT NULL,
+  next        TEXT,
+  expires_at  TEXT NOT NULL
 );

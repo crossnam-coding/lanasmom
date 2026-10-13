@@ -48,12 +48,17 @@ const orgJsonLd = {
   founder: { "@type": "Person", name: "라나엄마" },
 };
 
+/** 홈페이지 결제 스위치 (deploy.sh 의 NEXT_PUBLIC_CHECKOUT) */
+const CHECKOUT_ON = process.env.NEXT_PUBLIC_CHECKOUT === "on";
+const STORE_HEADER = "https://smartstore.naver.com/offhome?utm_source=lanasmom_site&utm_medium=header&utm_campaign=brand_site";
+
 const NAV = [
   { href: "/story", label: "이야기" },
   { href: "/menu", label: "메뉴" },
   { href: "/recipes", label: "만드는 법" },
   { href: "/journal", label: "부엌일기" },
   { href: "/about", label: "소개" },
+  ...(CHECKOUT_ON ? [{ href: "/my/", label: "내 주문" }] : []),
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -66,14 +71,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
 
         <header className="sticky top-0 z-50 border-b border-[var(--line)] bg-[var(--paper)]/90 backdrop-blur">
-          <div className="container-x flex h-16 items-center justify-between md:h-20">
-            <Link href="/" className="flex items-center gap-2.5" aria-label="라나엄마 홈">
+          <div className="container-x flex h-14 items-center justify-between gap-4 md:h-20">
+            <Link href="/" className="flex shrink-0 items-center gap-2.5" aria-label="라나엄마 홈">
               <Image
                 src="/brand/logo-line-small-alpha.png"
                 alt=""
                 width={40}
                 height={32}
-                className="h-8 w-auto"
+                className="h-7 w-auto md:h-8"
                 priority
               />
               <Image
@@ -81,28 +86,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 alt="Lana's mom"
                 width={720}
                 height={96}
-                className="h-[20px] w-auto"
+                className="h-[17px] w-auto md:h-[20px]"
                 priority
               />
             </Link>
 
-            <nav className="flex items-center gap-6 text-[15px]">
+            <nav className="hidden items-center gap-6 text-[15px] md:flex">
               {NAV.map((n) => (
                 <Link key={n.href} href={n.href} className="text-[var(--ink-soft)] hover:text-[var(--terra)]">
                   {n.label}
                 </Link>
               ))}
-              <CartLink />
-              <a
-                href="https://smartstore.naver.com/offhome?utm_source=lanasmom_site&utm_medium=header&utm_campaign=brand_site"
-                target="_blank"
-                rel="noopener"
-                className="rounded-full bg-[var(--terra)] px-4 py-2 text-[14px] font-semibold text-white hover:bg-[var(--terra-deep)]"
-              >
-                주문하기
-              </a>
             </nav>
+
+            <div className="flex shrink-0 items-center gap-4">
+              <CartLink />
+              {CHECKOUT_ON ? (
+                <Link href="/menu" className="whitespace-nowrap rounded-full bg-[var(--terra)] px-4 py-2 text-[14px] font-semibold text-white hover:bg-[var(--terra-deep)]">
+                  주문하기
+                </Link>
+              ) : (
+                <a href={STORE_HEADER} target="_blank" rel="noopener"
+                  className="whitespace-nowrap rounded-full bg-[var(--terra)] px-4 py-2 text-[14px] font-semibold text-white hover:bg-[var(--terra-deep)]">
+                  주문하기
+                </a>
+              )}
+            </div>
           </div>
+          {/* 폰: 메뉴를 한 줄 아래로 — 넘치면 옆으로 밀어서 본다 */}
+          <nav className="container-x flex gap-5 overflow-x-auto whitespace-nowrap pb-2.5 text-[14px] [scrollbar-width:none] md:hidden">
+            {NAV.map((n) => (
+              <Link key={n.href} href={n.href} className="text-[var(--ink-soft)] hover:text-[var(--terra)]">
+                {n.label}
+              </Link>
+            ))}
+          </nav>
         </header>
 
         <main>{children}</main>
@@ -127,11 +145,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
               <div>
                 <p className="mb-2 font-semibold text-[var(--ink)]">주문</p>
-                <p>
-                  주문과 결제는 네이버 스마트스토어에서 이루어집니다.
-                  <br />
-                  이 홈페이지는 브랜드 소개와 조리법을 담고 있습니다.
-                </p>
+                {CHECKOUT_ON ? (
+                  <p>
+                    이 홈페이지에서 바로 주문하실 수 있고,
+                    <br />
+                    네이버 스마트스토어에서도 같은 상품을 판매합니다.
+                  </p>
+                ) : (
+                  <p>
+                    주문과 결제는 네이버 스마트스토어에서 이루어집니다.
+                    <br />
+                    이 홈페이지는 브랜드 소개와 조리법을 담고 있습니다.
+                  </p>
+                )}
                 <a
                   href="https://smartstore.naver.com/offhome?utm_source=lanasmom_site&utm_medium=footer&utm_campaign=brand_site"
                   target="_blank"

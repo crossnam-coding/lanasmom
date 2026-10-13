@@ -1,5 +1,6 @@
 import { json, logEvent, nowIso, type Env } from "../../_lib/env";
 import type { OrderRow } from "../../_lib/orders";
+import { enforceRetention } from "../../_lib/retention";
 
 const STATUSES = ["pending", "paid", "preparing", "shipped", "cancelled", "failed", "review"] as const;
 /** 사장님이 손으로 바꿀 수 있는 흐름. 결제 확정(paid)은 포트원 확인으로만 */
@@ -10,7 +11,8 @@ const NEXT: Record<string, string[]> = {
   review: ["cancelled"],
 };
 
-export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+export const onRequestGet: PagesFunction<Env> = async ({ request, env, waitUntil }) => {
+  waitUntil(enforceRetention(env));
   const u = new URL(request.url);
   const status = u.searchParams.get("status");
   const showPending = u.searchParams.get("pending") === "1";

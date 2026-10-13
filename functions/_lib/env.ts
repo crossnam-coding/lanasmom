@@ -23,6 +23,15 @@ export interface Env {
   NOTIFY_EMAIL?: string;
   MAIL_FROM?: string;
   SITE_URL?: string;
+  /** 로그인 — 값이 있는 것만 로그인 화면에 버튼이 뜬다 */
+  KAKAO_REST_KEY?: string;
+  KAKAO_CLIENT_SECRET?: string;
+  NAVER_CLIENT_ID?: string;
+  NAVER_CLIENT_SECRET?: string;
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  /** 이메일 로그인 = 로그인 링크 메일 (Resend). RESEND_API_KEY·MAIL_FROM 과 같이 있어야 켜진다 */
+  EMAIL_LOGIN?: string;
   /** 로컬 개발에서만 "1" — 어드민 인증을 건너뛴다. 프로덕션에 절대 넣지 않는다 */
   ADMIN_DEV_BYPASS?: string;
 }

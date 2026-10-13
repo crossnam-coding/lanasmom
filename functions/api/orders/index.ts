@@ -1,5 +1,6 @@
 import { json, logEvent, nowIso, type Env } from "../../_lib/env";
 import { orderName, priceOrder } from "../../_lib/catalog";
+import { currentUser } from "../../_lib/auth";
 
 const str = (v: unknown, max: number) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -36,15 +37,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   if (!/^[0-9]{5}$/.test(zipcode) || !address1) return json({ error: "주소를 검색해서 넣어 주세요." }, 400);
   if (body.agree !== true) return json({ error: "개인정보 수집·이용에 동의해 주셔야 주문할 수 있어요." }, 400);
 
+  const user = await currentUser(request, env); // 로그인했으면 내 주문에 묶는다(선택)
   const id = newOrderId();
   const accessKey = crypto.randomUUID();
   const now = nowIso();
   await env.DB.prepare(
     `INSERT INTO orders (id, access_key, created_at, status, name, phone, email, zipcode, address1, address2, memo,
-       items_json, subtotal, shipping, total, agree_at)
-     VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       items_json, subtotal, shipping, total, agree_at, user_id)
+     VALUES (?, ?, ?, 'pending', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
   ).bind(id, accessKey, now, name, phone, email || null, zipcode, address1, address2 || null, memo || null,
-    JSON.stringify(priced.lines), priced.subtotal, priced.shipping, priced.total, now).run();
+    JSON.stringify(priced.lines), priced.subtotal, priced.shipping, priced.total, now, user?.id ?? null).run();
   await logEvent(env, "order_created", id, { total: priced.total });
 
   return json({

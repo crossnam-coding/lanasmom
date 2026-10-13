@@ -37,6 +37,10 @@ export default function CheckoutForm() {
 
   useEffect(() => {
     fetch("/api/config").then((r) => r.json()).then(setCfg).catch(() => setCfg({ enabled: false, storeId: null, channelKey: null }));
+    // 로그인한 손님이면 이름·이메일을 미리 채운다(고칠 수 있음)
+    fetch("/api/auth/me").then((r) => r.json()).then((d) => {
+      if (d.user) setF((v) => ({ ...v, name: v.name || d.user.name || "", email: v.email || d.user.email || "" }));
+    }).catch(() => {});
   }, []);
 
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
