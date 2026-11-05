@@ -92,7 +92,12 @@ export default function Home() {
       {/* ── 대표 상품 ─────────────────────────────── */}
       <section className="container-x py-20 md:py-24">
         <div className="mb-10 flex items-end justify-between">
-          <h2 className="display text-[1.5rem] md:text-[1.9rem]">가장 많이 찾으시는 것</h2>
+          <div>
+            {/* 인쇄물(레시피 카드·스티커)과 같은 대표 문구 — docs/crowdfunding.md ✅ 확정 */}
+            <p className="mb-2 text-[12px] font-semibold tracking-[0.18em] text-[var(--mint-deep)]">PREMIUM HOME DINING</p>
+            <h2 className="display text-[1.5rem] md:text-[1.9rem]">가장 많이 찾으시는 것</h2>
+            <p className="mt-2 text-[15px] text-[var(--ink-soft)]">좋은 재료에 마음을 담아 차린 든든한 한 끼</p>
+          </div>
           <Link href="/menu" className="text-[15px] text-[var(--terra)] underline">
             전체 메뉴 →
           </Link>

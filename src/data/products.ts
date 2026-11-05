@@ -97,7 +97,7 @@ export const PRODUCTS: Product[] = [
     id: null, name: "한우스지된장전골", size: "980g · 2인분", price: null,
     image: "/products/suji-doenjang.jpg", category: "국·탕", hero: true,
     // 2026-10-13 오빠: 와디즈 준비 기간 동안 일시 품절(판매중지·삭제 아님). 와디즈 오픈 때 버튼을 와디즈 링크로
-    soldOut: true, soldOutNote: "재료 수급 사정으로 당분간 판매를 쉬어 갑니다. 다시 열면 이곳에서 먼저 알려드릴게요.",
+    soldOut: true, soldOutNote: "새 2인분 구성으로 와디즈에서 먼저 선보일 준비를 하고 있어요. 펀딩이 열리면 이곳에서 가장 먼저 알려드릴게요.",
     blurb: "젤리처럼 쫀득한 한우 스지와 구수한 된장 육수. 채소까지 담아 끓이기만 하면 됩니다.",
     note: "육수와 스지는 냉동, 채소와 버섯은 냉장으로 보내드립니다.",
   },
@@ -267,6 +267,8 @@ export const getProductBySlug = (slug: string) => PRODUCTS.find((p) => slugOf(p)
 export interface ProductDetail {
   /** 한 줄 헤드라인 — 이 음식을 한마디로 */
   headline?: string;
+  /** 인쇄물(레시피 카드·표시사항 스티커)과 같은 대표 문구 — 확정 문구만 (2026-11-05~) */
+  tagline?: { eyebrow: string; line: string };
   /** 이 음식이 시작된 이야기 (브랜드 서사와 연결) */
   origin?: string[];
   /** 만드는 방식 설명 */
@@ -458,6 +460,8 @@ export const DETAILS: Record<string, ProductDetail> = {
 
   한우스지된장전골: {
     headline: "먹고 싶어도, 파는 데가 없었습니다.",
+    // 와디즈 레시피 카드·스티커 인쇄 문구와 같게 (docs/crowdfunding.md ✅ 확정)
+    tagline: { eyebrow: "PREMIUM HOME DINING", line: "좋은 재료에 마음을 담아 차린 든든한 한 끼" },
     origin: [
       "스지 된장전골을 마지막으로 드신 게 언제인가요. 아마 기억나지 않으실 겁니다. 식당에서도 잘 팔지 않습니다.",
       "맛이 없어서가 아닙니다. 손이 너무 많이 가서입니다. 좋은 부위를 골라 오랜 시간 삶아야 하고 원가 부담도 큰 편이라, 식당에서도 쉽게 내기 어려운 메뉴입니다.",
