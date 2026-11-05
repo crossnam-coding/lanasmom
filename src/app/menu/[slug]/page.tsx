@@ -50,7 +50,7 @@ export async function generateMetadata({
       type: "article",
       title: `${p.name} · 라나엄마`,
       description: d?.headline ?? p.blurb,
-      images: p.image ? [p.image] : undefined,
+      images: [p.image ?? "/og-default.jpg"], // 사진 없는 상품도 공유 미리보기가 비지 않게
     },
   };
 }

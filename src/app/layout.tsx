@@ -24,6 +24,8 @@ export const metadata: Metadata = {
     siteName: "라나엄마 Lana's mom",
     title: "라나엄마 — 딸에게 먹이려고 만들기 시작했습니다",
     description: "1++ 한우 양지로 만든 장조림과 국·탕. Warmth on Your Table.",
+    // 사진이 없는 면(홈·소개·메뉴·레시피 등)도 카톡·인스타 공유 때 미리보기가 뜨게 (2026-11-05)
+    images: [{ url: "/og-default.jpg", width: 1200, height: 630, alt: "라나엄마 Lana's mom" }],
   },
   alternates: { canonical: "/" },
   robots: { index: INDEXABLE, follow: INDEXABLE },
