@@ -9,6 +9,10 @@ const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://lanasmom.com";
 /** 사업자정보가 비어 있는 동안은 색인을 막는다. 도메인 붙일 때 NEXT_PUBLIC_INDEXABLE=true */
 const INDEXABLE = process.env.NEXT_PUBLIC_INDEXABLE === "true";
 
+/** 네이버 서치어드바이저 소유확인 — 「HTML 태그」 방식 content 값만 넣는다. 비어 있으면 태그가 안 나간다.
+ *  구글은 서치콘솔 「도메인」 속성 + Cloudflare DNS TXT 로 확인하므로 코드에 넣을 것 없음 */
+const NAVER_SITE_VERIFICATION = "";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
   title: {
@@ -29,6 +33,7 @@ export const metadata: Metadata = {
   },
   alternates: { canonical: "/" },
   robots: { index: INDEXABLE, follow: INDEXABLE },
+  verification: NAVER_SITE_VERIFICATION ? { other: { "naver-site-verification": NAVER_SITE_VERIFICATION } } : undefined,
 };
 
 /* GEO — AI 검색이 인용할 수 있게 사실을 구조화해 둔다 */

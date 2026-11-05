@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 라나엄마 사이트 → Cloudflare Pages 배포
-#   ./deploy.sh                       색인 차단 상태로 배포 (기본)
-#   NEXT_PUBLIC_INDEXABLE=true ./deploy.sh   색인 열고 배포 (사업자정보·스토어 법인 이전 후에만)
+#   ./deploy.sh                              색인 열고 배포 (기본 · 2026-11-05 오빠 결정: 이미 영업 중이라 막을 이유 없음)
+#   NEXT_PUBLIC_INDEXABLE=false ./deploy.sh  색인 다시 막고 배포 (비상용)
 #
 # 반드시 out/ 만 올린다. `wrangler pages deploy .` 는 .gitignore 를 보지 않아
 # 소스·비밀 파일이 통째로 올라간다 (2026-08-03 타 프로젝트 사고).
@@ -21,6 +21,8 @@ if grep -q '00000000-0000-0000-0000-000000000000' wrangler.toml 2>/dev/null; the
   STATIC_ONLY=1
 fi
 
+export NEXT_PUBLIC_INDEXABLE="${NEXT_PUBLIC_INDEXABLE:-true}"
+
 rm -rf out
 # 홈페이지 결제 화면은 NEXT_PUBLIC_CHECKOUT=on 일 때만 보인다 (서버 쪽 스위치 = Cloudflare 환경변수 CHECKOUT_ENABLED)
 NEXT_PUBLIC_SITE_URL="${NEXT_PUBLIC_SITE_URL:-https://lanasmom.com}" NEXT_PUBLIC_CHECKOUT="${NEXT_PUBLIC_CHECKOUT:-off}" npx next build
@@ -32,10 +34,15 @@ if grep -rlq '"/lanasmom/' out --include='*.html'; then
 fi
 bad=$(find out -type f \( -name '*.md' -o -name '.env*' -o -name '*.bak' -o -name '*.toml' -o -name '*.ts' -o -name '*.log' \) | head -1)
 [ -z "$bad" ] || { echo "❌ 올리면 안 되는 파일이 섞였다: $bad"; exit 1; }
-if [ "${NEXT_PUBLIC_INDEXABLE:-}" != "true" ] && ! grep -q 'Disallow: /' out/robots.txt; then
-  echo "❌ 색인 차단이 풀려 있다 — 의도한 게 아니면 중단"; exit 1
+if [ "$NEXT_PUBLIC_INDEXABLE" = "true" ]; then
+  # 열기로 했는데 막혀 있거나, 사이트맵이 robots 에 안 실리면 검색엔진이 못 찾는다
+  ! grep -q 'Disallow: /$' out/robots.txt || { echo "❌ 색인을 열기로 했는데 robots.txt 가 막혀 있다"; exit 1; }
+  grep -q 'Sitemap: https://lanasmom.com/sitemap.xml' out/robots.txt || { echo "❌ robots.txt 에 사이트맵 주소가 없다"; exit 1; }
+  ! grep -q '<meta name="robots" content="noindex' out/index.html || { echo "❌ 홈에 noindex 가 남아 있다"; exit 1; }
+elif ! grep -q 'Disallow: /' out/robots.txt; then
+  echo "❌ 색인을 막기로 했는데 robots.txt 가 열려 있다"; exit 1
 fi
-echo "✅ 검사 통과 · 파일 $(find out -type f | wc -l | tr -d ' ')개 · 색인 $([ "${NEXT_PUBLIC_INDEXABLE:-}" = "true" ] && echo 열림 || echo 차단)"
+echo "✅ 검사 통과 · 파일 $(find out -type f | wc -l | tr -d ' ')개 · 색인 $([ "$NEXT_PUBLIC_INDEXABLE" = "true" ] && echo 열림 || echo 차단)"
 
 if [ "$STATIC_ONLY" = "1" ]; then
   for r in admin cart checkout login my contact inquiry order; do rm -rf "out/$r"; done
