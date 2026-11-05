@@ -12,9 +12,13 @@ ENV_FILE="${CF_ENV:-$HOME/존버맵/.env}"   # CLOUDFLARE_API_TOKEN / CLOUDFLARE
 [ -f "$ENV_FILE" ] || { echo "❌ Cloudflare 토큰 파일 없음: $ENV_FILE"; exit 1; }
 set -a; . "$ENV_FILE"; set +a
 
-# 실제 D1 을 만들기 전에는 배포하지 않는다 (가짜 id 로 올리면 주문 API 가 깨진다)
+# 주문·결제·어드민(functions + D1)이 아직 준비 전이면 «글·사진만» 올린다.
+#   - wrangler.toml 의 D1 id 가 가짜인 동안은 자동으로 STATIC_ONLY=1
+#   - 이때 functions/ 와 wrangler.toml 을 빼고, 주문·어드민 화면(/admin /cart /checkout …)도 out 에서 뺀다
+STATIC_ONLY="${STATIC_ONLY:-}"
 if grep -q '00000000-0000-0000-0000-000000000000' wrangler.toml 2>/dev/null; then
-  echo "❌ wrangler.toml 의 D1 id 가 아직 가짜다 — Cloudflare 에서 D1 'lanasmom' 을 만들고 id 를 넣은 뒤 배포"; exit 1
+  if [ "$STATIC_ONLY" = "0" ]; then echo "❌ D1 id 가 가짜인데 STATIC_ONLY=0 — D1 을 먼저 만든다"; exit 1; fi
+  STATIC_ONLY=1
 fi
 
 rm -rf out
@@ -33,4 +37,13 @@ if [ "${NEXT_PUBLIC_INDEXABLE:-}" != "true" ] && ! grep -q 'Disallow: /' out/rob
 fi
 echo "✅ 검사 통과 · 파일 $(find out -type f | wc -l | tr -d ' ')개 · 색인 $([ "${NEXT_PUBLIC_INDEXABLE:-}" = "true" ] && echo 열림 || echo 차단)"
 
-npx --yes wrangler@4 pages deploy out --project-name lanasmom --branch main --commit-dirty=true
+if [ "$STATIC_ONLY" = "1" ]; then
+  for r in admin cart checkout login my contact inquiry order; do rm -rf "out/$r"; done
+  [ ! -e out/admin ] && [ ! -e out/checkout ] || { echo "❌ 주문·어드민 화면이 out 에 남았다"; exit 1; }
+  STAGE="$(mktemp -d)"; trap 'rm -rf "$STAGE"' EXIT
+  cp -R out "$STAGE/out"           # functions/·wrangler.toml 이 없는 곳에서 올린다 = 글·사진만
+  echo "ℹ️  글·사진만 배포 (functions·D1 제외) · 파일 $(find "$STAGE/out" -type f | wc -l | tr -d ' ')개"
+  (cd "$STAGE" && npx --yes wrangler@4 pages deploy out --project-name lanasmom --branch main --commit-dirty=true)
+else
+  npx --yes wrangler@4 pages deploy out --project-name lanasmom --branch main --commit-dirty=true
+fi

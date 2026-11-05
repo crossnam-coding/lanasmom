@@ -1,0 +1,4 @@
+# 인쇄물 QR 은 짧은 주소로 → 여기서 utm 을 붙여 넘긴다 (인쇄 뒤에도 목적지를 바꿀 수 있게)
+# 2026-11-05 와디즈 한우스지된장전골 레시피 카드(A5 · 4,000부)
+/card   /?utm_source=recipe_card&utm_medium=qr&utm_campaign=suji_wadiz   302
+/card/  /?utm_source=recipe_card&utm_medium=qr&utm_campaign=suji_wadiz   302

@@ -264,6 +264,27 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           )}
         </div>
 
+        {d?.label && (
+          <div className="mt-8 overflow-hidden rounded-2xl border border-[var(--line)] bg-white text-[14px]">
+            <p className="border-b border-[var(--line)] bg-[var(--paper-2)] px-5 py-3 font-semibold">제품 표시사항</p>
+            <dl className="divide-y divide-[var(--line)]">
+              {([
+                ["식품유형", d.label.foodType],
+                ["내용량", d.label.netWeight],
+                ["소비기한", d.label.shelfLife],
+                ["알레르기", d.label.allergens],
+                ["제조원", d.label.maker],
+              ] as const).filter(([, v]) => v).map(([k, v]) => (
+                <div key={k} className="flex gap-4 px-5 py-2.5">
+                  <dt className="w-20 shrink-0 text-[var(--ink-soft)]">{k}</dt>
+                  <dd>{v}</dd>
+                </div>
+              ))}
+            </dl>
+            {d.label.facility && <p className="border-t border-[var(--line)] px-5 py-3 text-[13px] text-[var(--ink-soft)]">{d.label.facility}</p>}
+          </div>
+        )}
+
         {(d?.storage || p.note) && (
           <p className="mt-8 rounded-2xl bg-[var(--paper-2)] p-5 text-[14.5px] leading-relaxed text-[var(--ink-soft)]">
             <span className="font-semibold text-[var(--ink)]">보관 </span>

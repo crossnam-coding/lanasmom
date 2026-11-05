@@ -61,7 +61,8 @@ export default function AboutPage() {
                 ["사업자등록번호", "493-86-03839"],
                 ["영업신고번호", "법인 명의 이전 중"],
                 ["작업장", "경기도 광주시 오포로 683, 2동 1층 (추자동)"],
-                ["문의", "●●●-●●●●-●●●●"],
+                ["문의", "lanasmom@naver.com (평일 10:00–18:00)"],
+                ["인스타그램", "@lanasmom1227"],
               ].map(([k, v]) => (
                 <div key={k} className="flex gap-4">
                   <dt className="w-32 shrink-0 text-[var(--ink-soft)]">{k}</dt>

@@ -47,6 +47,8 @@ const orgJsonLd = {
     addressLocality: "광주시",
   },
   founder: { "@type": "Person", name: "라나엄마" },
+  email: "lanasmom@naver.com",
+  sameAs: ["https://www.instagram.com/lanasmom1227"],
 };
 
 /** 홈페이지 결제 스위치 (deploy.sh 의 NEXT_PUBLIC_CHECKOUT) */
@@ -141,11 +143,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <div className="grid gap-8 text-[13px] leading-relaxed text-[var(--ink-soft)] md:grid-cols-2">
               <div>
                 <p className="mb-2 font-semibold text-[var(--ink)]">라나맘 주식회사 · 라나엄마 (Lana&rsquo;s mom)</p>
-                {/* 사업자등록증 2026-10-13 발급본 기준. 영업신고번호·문의 번호는 아직 없음 */}
+                {/* 사업자등록증 2026-10-13 발급본 기준. 고객문의 = 와디즈·스토어에 등록한 CS 메일(2026-10-12 펀딩방). 전화번호는 싣지 않는다(오빠 10-13) */}
                 <p>사업자등록번호 493-86-03839</p>
                 <p>영업신고번호 법인 명의 이전 중</p>
                 <p>대표 김대억, 임은선 · 경기도 광주시 오포로 683, 2동 1층 (추자동)</p>
-                <p>고객문의 ●●●-●●●●-●●●●</p>
+                <p>
+                  고객문의 <a href="mailto:lanasmom@naver.com" className="underline">lanasmom@naver.com</a> · 평일 10:00–18:00
+                </p>
+                <p>
+                  인스타그램 <a href="https://www.instagram.com/lanasmom1227" target="_blank" rel="noopener" className="underline">@lanasmom1227</a>
+                </p>
               </div>
               <div>
                 <p className="mb-2 font-semibold text-[var(--ink)]">주문</p>
