@@ -50,7 +50,7 @@ export async function generateMetadata({
       type: "article",
       title: `${p.name} · 라나엄마`,
       description: d?.headline ?? p.blurb,
-      images: p.image ? [p.image] : undefined,
+      images: [p.image ?? "/og-default.jpg"], // 사진 없는 상품도 공유 미리보기가 비지 않게
     },
   };
 }
@@ -133,6 +133,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
             )}
             {p.soldOut && p.soldOutNote && (
               <p className="mb-4 text-[14px] leading-relaxed text-[var(--ink-soft)]">{p.soldOutNote}</p>
+            )}
+            {d?.tagline && (
+              <div className="mb-3">
+                <p className="text-[12px] font-semibold tracking-[0.18em] text-[var(--mint-deep)]">{d.tagline.eyebrow}</p>
+                <p className="mt-1 text-[15px] text-[var(--ink-soft)]">{d.tagline.line}</p>
+              </div>
             )}
             <h1 className="display text-[1.8rem] md:text-[2.2rem]">{p.name}</h1>
             {p.size && <p className="mt-2 text-[15px] text-[var(--ink-soft)]">{p.size}</p>}

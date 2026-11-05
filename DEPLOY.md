@@ -38,13 +38,19 @@
 - 해시는 `curl … > 파일` 로 저장해 `md5 -q 파일` 로 잰다. `echo "$변수" | md5` 는 줄바꿈이 바뀌어 거짓 불일치가 난다(10-13)
 - 배포본 고유 주소(`<해시>.lanasmom.pages.dev`)는 인증서가 몇 분 늦게 붙는다 — HTTP 000 이 나와도 배포 실패가 아니다
 
-## 🔒 색인은 막혀 있다
-- `NEXT_PUBLIC_INDEXABLE` 가 `"true"` 가 아니면 `robots.txt` = `Disallow: /` + meta `noindex`
-- **푸는 시점 = 스토어 명의가 법인으로 넘어가고 사업자정보를 채운 날** (`Ai Docu/라나맘/CLAUDE.md` K9③)
-  ```bash
-  NEXT_PUBLIC_INDEXABLE=true ./deploy.sh
-  ```
-- 그날 같이 할 것: 푸터·소개 `●●●` 채우기 · 쿠키 없는 방문 분석 · **개인정보처리방침**(분석 넣는 순간 필요)
+## 🔓 색인 — 연다 (2026-11-05 오빠 결정)
+- 오빠: *"영업 중이야 심지어"* → 막아둘 이유가 없다. 이제 `./deploy.sh` **기본값이 색인 열림**이다.
+  (예전 기준 「스토어 법인 명의 이전 + 사업자정보 채운 날」은 이 결정으로 대체됐다)
+- 다시 막아야 하면 `NEXT_PUBLIC_INDEXABLE=false ./deploy.sh`
+- deploy.sh 가 검사한다: 열기로 했는데 robots 가 막혀 있거나 · 사이트맵 줄이 없거나 · 홈에 noindex 가 남으면 중단
+- 로그인·장바구니·주문·어드민 화면은 색인을 열어도 각자 noindex 다(빌드 산출물로 확인)
+- 열면 AI 크롤러(GPTBot·ClaudeBot·PerplexityBot·Google-Extended·CCBot·Applebot-Extended)와 네이버 Yeti 가 허용된다
+
+### 연 다음 바로 할 것 (오빠 손 = 로그인)
+1. **네이버 서치어드바이저** — searchadvisor.naver.com → 사이트 등록 `https://lanasmom.com` → 소유확인 「HTML 태그」 →
+   content 값을 `src/app/layout.tsx` 의 `NAVER_SITE_VERIFICATION` 에 넣고 배포 → 확인 → 요청 › 사이트맵 제출 `https://lanasmom.com/sitemap.xml`
+2. **구글 서치콘솔** — 「도메인」 속성 `lanasmom.com` → 나오는 TXT 값을 Cloudflare DNS 에 추가 → 확인 → 사이트맵 제출
+3. 남은 숙제: 쿠키 없는 방문 분석(QR `/qr`·`/card` 효과를 재려면 필요) · 분석을 넣는 순간 **개인정보처리방침**
 
 ## 도메인 `lanasmom.com` 연결 — ✅ 2026-10-13 완료 (아래는 했던 순서·다시 할 때 참고)
 > 🔴 API 로 Pages 에 도메인을 붙여도 DNS 레코드는 **자동으로 안 생겼다**(토큰에 DNS 권한 없음) → 대시보드 DNS 에서 `@`·`www` CNAME → `lanasmom.pages.dev`(프록시 켬) 를 손으로 넣고 재검증하니 1~2분 만에 active
