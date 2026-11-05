@@ -11,7 +11,7 @@ const INDEXABLE = process.env.NEXT_PUBLIC_INDEXABLE === "true";
 
 /** 네이버 서치어드바이저 소유확인 — 「HTML 태그」 방식 content 값만 넣는다. 비어 있으면 태그가 안 나간다.
  *  구글은 서치콘솔 「도메인」 속성 + Cloudflare DNS TXT 로 확인하므로 코드에 넣을 것 없음 */
-const NAVER_SITE_VERIFICATION = "";
+const NAVER_SITE_VERIFICATION = "ce2812b423f64328c66d7229a8c606b4f08f114b";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
