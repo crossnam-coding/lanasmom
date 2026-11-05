@@ -1,0 +1,30 @@
+# 라이브 lanasmom.com 상태 확인 (읽기 전용 · 이 브랜치 푸시 때만)
+name: live-check
+on:
+  push:
+    branches: [claude/live-check]
+    paths: ['.github/workflows/live-check.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: lanasmom.com 라이브 점검
+        run: |
+          set +e
+          S=https://lanasmom.com
+          echo "═══ robots.txt"; curl -s -m 20 "$S/robots.txt" | head -20
+          echo "═══ 홈"; curl -s -m 20 -o /tmp/h.html -w "HTTP %{http_code}\n" "$S/"
+          grep -oE '<meta name="naver-site-verification" content="[^"]*"' /tmp/h.html || echo "네이버 태그 없음"
+          grep -oE '<meta name="robots" content="[^"]*"' /tmp/h.html || echo "robots 메타 없음(=색인 허용 기본)"
+          grep -oE '<meta property="og:image" content="[^"]*"' /tmp/h.html | head -1
+          grep -c "PREMIUM HOME DINING" /tmp/h.html | sed 's/^/대표문구 등장 수: /'
+          echo "═══ 짧은 주소"
+          for p in /qr /card; do printf '%-6s ' "$p"; curl -s -m 20 -o /dev/null -w "HTTP %{http_code} → %{redirect_url}\n" "$S$p"; done
+          echo "═══ 파일"
+          for p in /og-default.jpg /sitemap.xml /llms.txt /menu/suji-doenjang-jeongol/; do printf '%-34s ' "$p"; curl -s -m 20 -o /tmp/f -w "HTTP %{http_code} %{size_download}B\n" "$S$p"; done
+          echo "사이트맵 URL 수: $(curl -s -m 20 $S/sitemap.xml | grep -o '<loc>' | wc -l)"
+          curl -s -m 20 "$S/menu/suji-doenjang-jeongol/" | grep -o "와디즈에서 먼저 선보일" | head -1 || true
+          curl -s -m 20 "$S/llms.txt" | grep -c "한우스지된장전골 (2026-11" | sed 's/^/llms.txt 스지전골 섹션: /'
+          echo "═══ 네이버 봇 시점"; curl -s -m 20 -A "Mozilla/5.0 (compatible; Yeti/1.1; +https://naver.me/spd)" -o /dev/null -w "Yeti HTTP %{http_code}\n" "$S/"
