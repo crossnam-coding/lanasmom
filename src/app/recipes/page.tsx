@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "만드는 법",
   description:
-    "라나엄마가 실제로 쓰는 조리법을 그대로 공개합니다. 한우 장조림 질기지 않게 만드는 법, 스지 손질법, 곰탕 국물 맑게 내는 법.",
+    "라나엄마가 실제로 쓰는 조리법을 그대로 공개합니다. 한우 장조림 질기지 않게 만드는 법, 한우 스지 고르고 삶는 법, 곰탕 국물 맑게 내는 법.",
   alternates: { canonical: "/recipes" },
 };
 
@@ -18,9 +18,9 @@ export const RECIPES = [
   },
   {
     slug: "suji-sonjil",
-    title: "스지(소 힘줄) 손질하는 법",
-    desc: "식당에서도 잘 안 파는 이유가 있습니다. 손질에 반나절이 걸리거든요.",
-    time: "약 6시간 30분",
+    title: "한우 스지, 이렇게 고르고 이렇게 삶습니다",
+    desc: "부위마다 식감이 달라 직접 먹어보고 고른 부위만 씁니다. 집에서 된장전골 끓이는 법까지 적었습니다.",
+    time: "끓은 뒤 5분",
     ready: true,
   },
   {
